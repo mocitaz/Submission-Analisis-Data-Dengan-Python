@@ -53,7 +53,7 @@ def load_data(file_path):
         return None
 
 # Memuat data dari file 'main_data.csv'
-maindata = load_data("main_data.csv")
+maindata = pd.read_csv('dashboard/main_data.csv')
 
 # Hentikan eksekusi jika data gagal dimuat
 if maindata is None:
