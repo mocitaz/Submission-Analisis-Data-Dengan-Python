@@ -46,14 +46,14 @@ def load_data(file_path):
     """Memuat data dari file CSV dengan caching untuk performa."""
     try:
         data = pd.read_csv(file_path)
-        data['dteday'] = pd.to_datetime(data['dteday'])
+        data['dteday'] = pd.to_datetime(data['dteday'], errors='coerce')  # Pastikan kolom 'dteday' dalam format datetime
         return data
     except Exception as e:
         st.error(f"Gagal memuat {file_path}: {e}")
         return None
 
 # Memuat data dari file 'main_data.csv'
-maindata = pd.read_csv('dashboard/main_data.csv')
+maindata = load_data('dashboard/main_data.csv')
 
 # Hentikan eksekusi jika data gagal dimuat
 if maindata is None:
@@ -61,7 +61,6 @@ if maindata is None:
 
 # --- PREPROCESSING DATA ---
 # Mempetakan kategori cuaca berdasarkan data yang sudah diberikan
-# (Menggunakan data yang ada: "Cerah", "Berawan", "Hujan Ringan", "Hujan Berat")
 maindata['weathersit'] = maindata['weathersit'].fillna('Unknown')
 
 # Menambahkan kolom hari dalam seminggu
@@ -197,3 +196,4 @@ st.plotly_chart(fig2, use_container_width=True)
 
 # --- FOOTER ---
 st.markdown('<div class="footer">Data dari <a href="https://www.kaggle.com/datasets/robikscube/bike-sharing-dataset">Bike Sharing Dataset (Kaggle)</a></div>', unsafe_allow_html=True)
+
